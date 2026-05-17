@@ -553,37 +553,22 @@ Elsa v3 natively supports explicit definition versioning (Version 1, Version 2).
 2. **Route new assets to the new version:** Configure your Hot Chocolate mutation to fetch and start the latest published version (vLatest) only for *newly initialized* Builds.
 3. **Code-level Backward Compatibility:** If an explicit structural modification is unavoidable, implement standard C# polymorphic JSON deserialization options or explicit version mapping inside your custom Elsa activities:
 
-```
+```csharp
 public class VerifyPartsActivity : Activity
-
 {
-
-protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
-
-{
-
-// Read the version of the workflow definition running this specific instance
-
-int definitionVersion = context.Workflow.Identity.Version;
-
-if (definitionVersion < 2)
-
-{
-
-// Execute V1 fallback logic using legacy data contracts
-
-}
-
-else
-
-{
-
-// Execute modernized V2 business rules
-
-}
-
-}
-
+  protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
+  {
+    // Read the version of the workflow definition running this specific instance
+    int definitionVersion = context.Workflow.Identity.Version;
+    if (definitionVersion < 2)
+    {
+       // Execute V1 fallback logic using legacy data contracts
+    }
+    else
+    {
+       // Execute modernized V2 business rules
+    }
+  }
 }
 ```
 
@@ -909,59 +894,32 @@ To keep your code organized and maintain type safety across the stack during loc
 
 ```text
 /manufacturing-monorepo
-
 ├── /backend
-
 │ ├── /src
-
 │ │ ├── /FactoryApp.WebApi
-
 │ │ │ ├── Program.cs # Configures Hot Chocolate, EF Core, Elsa 3
-
 │ │ │ ├── FactoryApp.WebApi.csproj # Includes MSBuild targets for schema generation
-
 │ │ │ ├── schema.graphql # Auto-emitted GraphQL schema file
-
 │ │ ├── /FactoryApp.Domain
-
 │ │ │ ├── /Entities # Build.cs, Part.cs, TestRun.cs
-
 │ │ │ ├── /Data # FactoryDbContext.cs (EF Core Context)
-
 │ │ ├── /FactoryApp.GraphQL
-
 │ │ │ ├── /Queries # Hot Chocolate query resolvers
-
 │ │ │ ├── /Mutations # Mutation resolvers linking to Elsa Runtime
-
 │ │ │ ├── /DataLoaders # Custom batch data-loading classes
-
 │ │ ├── /FactoryApp.Workflows
-
 │ │ │ ├── /Activities # Custom Elsa 3 execution activities
-
 │ │ │ ├── /Definitions # C# Code-First Workflow definitions
-
 │ │ │ ├── /DapperQueries # Raw SQL Dapper tracking scripts
-
 ├── /frontend
-
 │ ├── /src
-
 │ │ ├── /app
-
 │ │ │ ├── /graphql # Manual definition of UI operations (.graphql files)
-
 │ │ │ ├── /api
-
 │ │ │ │ ├── /generated # Target folder for GraphQL Code-Gen output
-
 │ │ │ │ │ └── graphql.ts # Fully type-safe generated Angular client services
-
 │ │ │ ├── /components # Smart/Dumb Angular component layouts
-
 │ ├── package.json # Manages graphql-codegen configurations
-
 │ ├── codegen.ts # Build-watcher rule for front-end client generation
 ```
 
