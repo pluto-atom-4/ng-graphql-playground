@@ -122,10 +122,10 @@ Add the NSwag CLI tool package to your C# Web API project (.csproj):
 
 ```xml
 <ItemGroup>
-<PackageReference Include="NSwag.MSBuild" Version="14.*">
-<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-<PrivateAssets>all</PrivateAssets>
-</PackageReference>
+  <PackageReference Include="NSwag.MSBuild" Version="14.*">
+    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <PrivateAssets>all</PrivateAssets>
+  </PackageReference>
 </ItemGroup>
 ```
 
