@@ -1,0 +1,127 @@
+# 🏭 ng-graphql-playground
+
+A high-performance, type-safe Full Stack Monorepo designed to manage long-running manufacturing workflows (`Build`, `Parts`, `Test Run`).
+
+This project uses a hybrid data engine to achieve both maximum developer velocity for real-time dashboards and bare-metal ingestion speeds for automated factory machinery.
+
+---
+
+## 🏗️ Architecture Blueprint
+
+```text
+        ┌──────────────────────────────────────────────┐
+        │         Angular UI (Apollo / Urql)           │
+        └──────────────────────┬───────────────────────┘
+                               │ ▲
+  GraphQL Queries & Mutations  │ │  Real-time Subscriptions
+                               ▼ │  (WebSockets / SSE)
+         ┌──────────────────────────────────────────────┐
+         │        Hot Chocolate GraphQL Gateway         │
+         └──────────────────────┬───────────────────────┘
+                                │
+          Enforces Projections, │ Dispatches High-Frequency
+          Filters & DataLoaders │ Telemetry / Dense Audits
+                                ▼
+         ┌──────────────────────────────────────────────┐
+         │           ASP.NET Core Back-End              │
+         └──────────────┬────────────────┬──────────────┘
+                        │                │
+Domain Orchestration /  │                │ High-Velocity Direct SQL
+Elsa State Automation   │                │ Execution (Bypass Change Tracker)
+                        ▼                ▼
+         ┌──────────────────────┐┌──────────────────────┐
+         │  Entity Framework    ││                      │
+         │      Core Context    ││    Dapper Engine     │
+         └──────────────┬───────┘└───────┬──────────────┘
+                        │                │
+                 Native │                │ Shares Connection &
+            ORM Queries │                │ Local ADO.NET Transaction
+                        ▼                ▼
+         ┌──────────────────────────────────────────────┐
+         │           Microsoft SQL Server               │
+         └──────────────────────────────────────────────┘
+```
+
+
+---
+
+## 📁 Repository Directory Structure
+
+```text
+ng-graphql-playground/
+├── /backend                    # .NET 8/9 ASP.NET Core Solution
+│   ├── /src
+│   │   ├── /FactoryApp.WebApi  # Web API Entry, Hot Chocolate Setup, Elsa 3 Runtime
+│   │   │   ├── schema.graphql  # Auto-emitted GraphQL schema file on local build
+│   │   ├── /FactoryApp.Domain  # Core entities (Build, Part, TestRun) & Data Context
+│   │   ├── /FactoryApp.GraphQL # Hot Chocolate GraphQL Query, Mutation, & DataLoaders
+│   │   └── /FactoryApp.Workflows # Elsa 3 Activities & High-Speed Dapper SQL scripts
+├── /frontend                   # Angular Workspace
+│   ├── /src
+│   │   └── /app
+│   │       ├── /graphql        # Front-end UI operations definition (.graphql files)
+│   │       ├── /api/generated  # Target for GraphQL Code-Gen (Outputs: graphql.ts)
+│   │       └── /components     # Smart/Dumb Angular component layouts (OnPush enabled)
+│   ├── codegen.ts              # Automatically maps schema.graphql to type-safe TypeScript
+│   └── package.json            # Front-end scripts and web dependencies
+└── README.md
+```
+
+---
+
+## ⚙️ Core Technical Rules
+
+### 1. The Separation of Concerns
+
+* **EF Core** handles all system reads (GraphQL), schema migrations, and **Elsa 3 Workflow Engine** operations. The context defaults to `NoTracking` to match Dapper's read performance.
+* **Dapper** is used strictly for high-frequency writes (automated testing metrics, high-speed sorting arrays) to bypass all ORM state overhead.
+
+### 2. The Shared Transaction Rule
+
+When a mutation updates a core asset state via EF Core while logging bulk metrics via Dapper, they 
+**must** share an explicit ADO.NET transaction context to prevent deadlocks:
+
+```csharp
+using var transaction = await context.Database.BeginTransactionAsync();
+var dbConnection = context.Database.GetDbConnection();
+var dbTransaction = context.Database.CurrentTransaction?.GetDbTransaction();
+
+// Execute Dapper code passing `transaction: dbTransaction` here
+// Execute EF Core SaveChangesAsync() here
+await transaction.CommitAsync();
+```
+
+### 3. Automated Type Safety Pipeline
+
+Type safety is fully automated during a local build. Changing a backend C# DTO or schema updates the pipeline automatically:
+
+1. Compile backend code (`dotnet build`).
+2. MSBuild exports the unified `schema.graphql` to disk.
+3. The frontend file-watcher triggers **GraphQL Code Generator**.
+4. Type-safe Angular services (`graphql.ts`) update automatically.
+
+---
+
+## 🚀 Quickstart Local Environment
+
+### Prerequisites
+
+* [.NET SDK](https://microsoft.com) (Version 8.0 or later)
+* [Node.js](https://nodejs.org) (Version 18 or later)
+* [SQL Server](https://microsoft.com) (LocalDB or Express)
+
+### Running the Project
+
+1. **Initialize Database & Run Backend:**
+    ```bash
+    cd backend/src/FactoryApp.WebApi
+    dotnet ef database update
+    dotnet run
+    ```
+2. **Generate Types & Run Frontend:**
+    ```bash
+    cd frontend
+    npm install
+    npm run codegen
+    npm run start
+    ```
