@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Bash(npm *)",
+      "Bash(dotnet *)",
+      "Bash(git *)",
+      "Read",
+      "Edit"
+    ]
+  },
+  "skillOverrides": {
+    "fix-github-issues": "on",
+    "example-skills:session-blog-to-gist": "on",
+    "example-skills:push-feature-branch": "on",
+    "example-skills:doc-coauthoring": "on",
+    "update-config": "on",
+    "secure-github-repo": "on"
+  },
+  "autoMemoryEnabled": true,
+  "alwaysThinkingEnabled": true,
+  "model": "claude-opus-4-7",
+  "respectGitignore": true,
+  "spinnerTipsEnabled": true
+}
