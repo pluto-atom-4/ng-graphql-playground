@@ -1,0 +1,33 @@
+# CODEOWNERS
+
+# This file designates code ownership for the repository.
+# For a solo developer project, this serves primarily as documentation.
+#
+# GitHub will request reviews from code owners when PRs modify these files.
+# In this solo developer workflow, the maintainer (pluto-atom-4) reviews all changes.
+#
+# Format: <path/pattern> <@github-username>
+
+# Default: All files
+* @pluto-atom-4
+
+# Critical infrastructure files
+.github/ @pluto-atom-4
+docker-compose.yml @pluto-atom-4
+package.json @pluto-atom-4
+
+# Security and configuration
+SECURITY.md @pluto-atom-4
+.gitignore @pluto-atom-4
+.env.local.example @pluto-atom-4
+
+# Backend source code
+backend/src/ @pluto-atom-4
+
+# Frontend source code  
+frontend/src/ @pluto-atom-4
+
+# Documentation
+docs/ @pluto-atom-4
+README.md @pluto-atom-4
+CONTRIBUTING.md @pluto-atom-4

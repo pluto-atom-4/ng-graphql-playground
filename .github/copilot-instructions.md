@@ -307,5 +307,7 @@ ng-graphql-playground/
 
 - `README.md` — Project overview and quickstart
 - `CLAUDE.md` — Comprehensive Claude Code guide with CI/CD, testing strategy, and skills
+- `CONTRIBUTING.md` — Development workflow, code standards, testing, and security practices
+- `SECURITY.md` — Vulnerability reporting, security policies, and best practices
 - `docs/research-architecuture-design.md` — Detailed analysis of GraphQL vs REST, EF Core vs Dapper
 - `docs/monorepo-assessment.md` — IDE recommendations, build orchestration, dependency management
