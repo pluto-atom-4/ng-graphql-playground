@@ -399,6 +399,160 @@ For Phase 2 security implementation details, see:
 
 ---
 
+## Dependabot: Automated Dependency Updates
+
+### How Dependabot Works
+
+Dependabot automatically:
+1. **Scans dependencies** for available updates and vulnerabilities
+2. **Creates PRs** with update proposals (weekly on Monday)
+3. **Runs CI/CD** to verify updates don't break anything
+4. **Auto-merges** safe updates (patch/minor versions)
+5. **Alerts you** to manual review needed (major versions, actions)
+
+### Configuration
+
+Dependabot is configured via `.github/dependabot.yml`:
+- **pnpm/npm packages**: Weekly updates, auto-merge patch/minor
+- **NuGet packages** (backend): Weekly updates, auto-merge patch/minor
+- **GitHub Actions**: Weekly updates, manual review only
+
+### Dependabot PR Workflow
+
+#### Automatic Process (Patch/Minor Updates)
+```
+Monday 3 AM UTC → Dependabot creates PR
+  ↓
+CI checks run (build, tests, lint)
+  ↓
+All checks pass → PR auto-merged
+  ↓
+Update deployed to main branch
+```
+
+#### Manual Review Process (Major Updates, Actions)
+```
+Monday 3-5 AM UTC → Dependabot creates PR
+  ↓
+Assigned to @pluto-atom-4
+  ↓
+Review: Can I safely use this major version?
+  ↓
+Yes → Merge PR | No → Close/convert to draft
+```
+
+### Reviewing Dependabot PRs
+
+**What to look for:**
+1. **Changelog** — Read package changelog for breaking changes
+2. **CI Status** — All checks must pass (green checkmarks)
+3. **Dependency Tree** — Check if other packages depend on this
+4. **Security Advisories** — Look for related CVE fixes
+
+**When to auto-merge:**
+- ✅ Patch versions (1.0.0 → 1.0.1): Safe, likely merge
+- ✅ Minor versions (1.0.0 → 1.1.0): Usually safe, unless changelog shows risks
+- ❌ Major versions (1.0.0 → 2.0.0): Review carefully for breaking changes
+
+**When to skip/close:**
+- ❌ If tests fail in Dependabot PR
+- ❌ If major version has incompatible API changes
+- ❌ If your code needs updates for new version
+
+### Common Dependabot Scenarios
+
+#### Scenario 1: Auto-Merged PR Appears on Main
+**What happened:** Patch/minor update was deemed safe and auto-merged
+
+**Action:** Pull latest main branch and test locally
+```bash
+git pull origin main
+pnpm install  # or: npm install (auto-detects)
+pnpm build    # or: npm run build
+pnpm test     # or: npm run test
+```
+
+#### Scenario 2: Major Version Requires Manual Review
+**What happened:** Dependabot created PR but didn't auto-merge (major version)
+
+**Action:** Review changelog and merge if safe
+```bash
+# 1. Review the PR on GitHub
+# 2. Check the changelog link in PR description
+# 3. If safe, click "Merge pull request"
+# 4. Delete branch
+```
+
+#### Scenario 3: Update Causes Test Failure
+**What happened:** CI checks failed; update introduces breaking change
+
+**Action:** Close PR and keep current version
+```bash
+# On GitHub: Click "Close pull request"
+# Dependabot will re-create in next cycle if unresolved
+```
+
+#### Scenario 4: Security Vulnerability Detected
+**What happened:** Dependabot detected CVE; creating urgent security PR
+
+**Action:** Merge immediately if tests pass
+```bash
+# On GitHub: Review security advisory link
+# If tests pass (green): Click "Merge pull request"
+# Security fixes take priority
+```
+
+### Dependabot Settings for This Repository
+
+| Setting | Value | Reason |
+|---------|-------|--------|
+| Schedule | Weekly, Monday 3 AM UTC | Batch updates; off-peak |
+| Auto-merge | On for patch/minor; Off for major/actions | Balance safety and automation |
+| Dependency types | All (direct, indirect, dev, prod) | Full visibility |
+| Labels | `dependencies`, `frontend`, `backend`, `ci` | Easy filtering |
+| Package managers | pnpm/npm + NuGet + GitHub Actions | Full coverage |
+
+### Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| Dependabot PRs not appearing | Wait 24 hours for first run; check Settings → Dependabot enabled |
+| PR fails CI checks | Review error messages; may indicate incompatibility |
+| Auto-merge not happening | Check if PR is marked as draft; convert to normal PR |
+| pnpm vs npm confusion | Dependabot auto-detects; uses pnpm-lock.yaml if present, npm-lock.json otherwise |
+| Too many PRs at once | Reduce frequency in `.github/dependabot.yml` (e.g., monthly instead of weekly) |
+
+### Disabling Dependabot Temporarily
+
+If you need to pause updates:
+```bash
+# Edit .github/dependabot.yml
+# Change interval from "weekly" to "never"
+# Commit and push
+# Dependabot will stop creating PRs
+```
+
+To re-enable:
+```bash
+# Change interval back to "weekly"
+# Commit and push
+# Dependabot resumes on next cycle
+```
+
+### Viewing Dependabot History
+
+GitHub tracks all Dependabot activity:
+- **URL:** https://github.com/pluto-atom-4/ng-graphql-playground/network/updates
+- Shows: All update PRs, merge history, skipped versions
+
+### Related Documentation
+
+- **[docs/implementation-planning/issue-7-phase-2-github-security-features.md](./implementation-planning/issue-7-phase-2-github-security-features.md)** — Full Phase 2 plan
+- **[docs/implementation-planning/task-2-dependabot-configuration.md](./implementation-planning/task-2-dependabot-configuration.md)** — Task 2 detailed guide
+- **[CONTRIBUTING.md](../CONTRIBUTING.md)** — Merge workflow and CI/CD
+
+---
+
 ## Related Documentation
 
 - **[README.md](../README.md)** — Project overview and quickstart

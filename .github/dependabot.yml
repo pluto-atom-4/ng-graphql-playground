@@ -1,0 +1,122 @@
+# Dependabot configuration for ng-graphql-playground
+# Automated dependency management for npm, NuGet, and GitHub Actions
+#
+# This configuration enables Dependabot to:
+# 1. Detect vulnerable dependencies
+# 2. Create PRs with security fixes and updates
+# 3. Auto-merge safe updates (patch/minor versions)
+# 4. Test updates via CI/CD before merge
+#
+# References:
+# - https://docs.github.com/en/code-security/dependabot
+# - https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+
+version: 2
+
+updates:
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # Frontend & Root pnpm/npm dependencies
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # Covers: frontend/package.json, root package.json (monorepo workspace)
+  # Detection: Auto-detects pnpm-lock.yaml or package-lock.json
+  - package-ecosystem: "npm"
+    directory: "/"
+    
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+      timezone: "UTC"
+    
+    # GitHub PR Configuration
+    reviewers:
+      - "pluto-atom-4"
+    assignees:
+      - "pluto-atom-4"
+    labels:
+      - "dependencies"
+      - "frontend"
+    
+    # Auto-merge for patch and minor updates
+    auto-merge: true
+    
+    # Include all dependency types (direct, indirect, dev, prod)
+    allow:
+      - dependency-type: "all"
+    
+    # Commit message format
+    commit-message:
+      prefix: "chore(deps):"
+      prefix-development: "chore(deps-dev):"
+      include: "scope"
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # Backend NuGet packages
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # Covers: backend/src/*.sln, backend/src/*.csproj (.NET packages)
+  - package-ecosystem: "nuget"
+    directory: "/backend/src"
+    
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"  # Staggered 1 hour after npm
+      timezone: "UTC"
+    
+    # GitHub PR Configuration
+    reviewers:
+      - "pluto-atom-4"
+    assignees:
+      - "pluto-atom-4"
+    labels:
+      - "dependencies"
+      - "backend"
+    
+    # Auto-merge for patch and minor updates
+    auto-merge: true
+    
+    # Include all dependency types
+    allow:
+      - dependency-type: "all"
+    
+    # Commit message format
+    commit-message:
+      prefix: "chore(deps-backend):"
+      include: "scope"
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # GitHub Actions (CI/CD Workflows)
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # Covers: .github/workflows/*.yml (@v* action references)
+  # Note: GitHub Actions are security-sensitive, requiring manual review
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "05:00"  # Staggered 1 hour after NuGet
+      timezone: "UTC"
+    
+    # GitHub PR Configuration
+    reviewers:
+      - "pluto-atom-4"
+    assignees:
+      - "pluto-atom-4"
+    labels:
+      - "dependencies"
+      - "ci/cd"
+      - "security"
+    
+    # Do NOT auto-merge GitHub Actions (security-critical)
+    # Requires manual review to prevent unintended behavior changes
+    auto-merge: false
+    
+    # Include all action types
+    allow:
+      - dependency-type: "all"
+    
+    # Commit message format
+    commit-message:
+      prefix: "chore(ci):"
+      include: "scope"
