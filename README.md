@@ -108,20 +108,53 @@ Type safety is fully automated during a local build. Changing a backend C# DTO o
 
 * [.NET SDK](https://microsoft.com) (Version 8.0 or later)
 * [Node.js](https://nodejs.org) (Version 18 or later)
-* [SQL Server](https://microsoft.com) (LocalDB or Express)
+* [Docker Desktop](https://www.docker.com/products/docker-desktop) (for SQL Server 2022)
 
-### Running the Project
+### One-Time Setup
 
-1. **Initialize Database & Run Backend:**
-    ```bash
-    cd backend/src/FactoryApp.WebApi
-    dotnet ef database update
-    dotnet run
-    ```
-2. **Generate Types & Run Frontend:**
-    ```bash
-    cd frontend
-    npm install
-    npm run codegen
-    npm run start
-    ```
+```bash
+npm run setup
+# Starts SQL Server container and runs database migrations
+```
+
+### Daily Development
+
+**Terminal 1: Backend (.NET with hot-reload)**
+```bash
+npm run dev:backend
+# Runs: dotnet watch run on Port 5000
+```
+
+**Terminal 2: Frontend (Angular with HMR)**
+```bash
+npm run dev:frontend
+# Runs: npm run ng serve on Port 4200
+```
+
+**Open browser to:** `http://localhost:4200`
+
+### Access Services
+
+| Service | URL |
+|---------|-----|
+| **GraphQL Endpoint** | `http://localhost:5000/graphql` |
+| **Angular Frontend** | `http://localhost:4200` |
+| **SQL Server** | `Server=localhost,1433; User Id=sa; Password=P@ssw0rd1234!` |
+
+### Stop Services
+
+```bash
+npm run docker:down
+```
+
+### Full Docker Command Reference
+
+```bash
+npm run docker:up          # Start SQL Server container
+npm run docker:down        # Stop SQL Server container
+npm run docker:clean       # Remove all containers and data volumes
+npm run docker:logs        # View SQL Server logs
+npm run db:migrate         # Run EF Core migrations
+```
+
+For comprehensive setup instructions, see [**docs/SETUP.md**](./docs/SETUP.md)
