@@ -303,6 +303,38 @@ ng-graphql-playground/
 5. **Types flow automatically** to Angular services
 6. **Angular IDE highlights** errors if queries reference removed fields
 
+## GitHub Copilot Procedures
+
+This repository includes **mandatory procedures** that Copilot must follow for specific tasks:
+
+### PR Review Workflow (Required Reading)
+
+When reviewing GitHub PRs, Copilot executes a **three-phase automated workflow** with **mandatory GitHub comment posting**:
+
+**Location**: `.github/copilot/rules/pr-review-workflow.md`
+
+**Key Points**:
+- ✅ Phase 1: Gather PR details and examine changes
+- ✅ Phase 2: Analyze code against architecture patterns
+- ✅ Phase 3: **Post review outcomes as GitHub PR comment** ← MANDATORY
+- 🔗 Comment must reference requirements and include verification checklist
+- 📋 Review must be structured with verdict, file analysis, and quality metrics
+
+**When Reviewing a PR**:
+1. Read the PR description and linked issue
+2. Use `code-review` agent for high-signal analysis
+3. Generate comprehensive assessment document
+4. **Post assessment as GitHub comment** using `gh pr comment` command
+5. Never skip the comment posting step — it ensures team visibility
+
+For full workflow details, procedures, and examples: See `.github/copilot/rules/pr-review-workflow.md`
+
+### Additional Procedures
+
+Other Copilot procedures are documented in `.github/copilot/`:
+- `.github/copilot/README.md` — Index of all procedures
+- `.github/copilot/rules/` — Directory of operational rules
+
 ## Related Documentation
 
 - `README.md` — Project overview and quickstart

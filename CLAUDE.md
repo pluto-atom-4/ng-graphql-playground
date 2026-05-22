@@ -429,6 +429,68 @@ jobs:
 
 ---
 
+## GitHub Copilot Procedures
+
+When working with GitHub Copilot in this repository, follow these **mandatory procedures**:
+
+### PR Review Workflow
+
+When you're asked to review a GitHub PR, **you must execute this three-phase workflow**:
+
+**📋 Full Procedure**: See `.github/copilot/rules/pr-review-workflow.md`
+
+**Quick Summary**:
+
+1. **Phase 1: Analyze**
+   - Fetch PR details, linked issue, and all code changes
+   - Check CI/CD status and test results
+   - Understand what the PR is trying to achieve
+
+2. **Phase 2: Review**
+   - Use `code-review` agent for high-signal analysis
+   - Verify against monorepo patterns (type safety, transactions, DataLoaders, etc.)
+   - Generate structured assessment with verdict and file analysis
+
+3. **Phase 3: Post Comment to GitHub** ← **MANDATORY**
+   - Post review as GitHub PR comment using `gh pr comment`
+   - Include requirements matrix, file analysis, and verdict
+   - Ensure team can see assessment immediately
+   - **Never skip this step** — it's mandatory for visibility
+
+**Example Comment Structure**:
+```markdown
+# 🔍 PR Review: [PR Title]
+
+## Summary
+✅ APPROVED FOR MERGE
+
+## Requirements
+| Requirement | Implementation | Status |
+|---|---|---|
+| [from issue] | [how PR meets it] | ✅ Done |
+
+## File Analysis
+### [File]
+- Purpose, Quality, Impact, Testing
+
+## Verification
+- [x] Type safety maintained
+- [x] Tests pass
+- [x] [PR-specific item]
+
+**Verdict: APPROVED FOR MERGE**
+```
+
+**Key Rules**:
+- ✅ Always post review outcomes to GitHub
+- ✅ Use structured format with tables and checklists
+- ✅ Reference requirements explicitly
+- ✅ Focus on logic, architecture, and security
+- ❌ Never skip comment posting
+- ❌ Never post incomplete reviews
+
+---
+
 ## Related Documentation
 
 - **Architecture Trade-offs**: See `/docs/research-architecuture-design.md` for detailed analysis of GraphQL vs REST, EF Core vs Dapper, and performance trade-offs
