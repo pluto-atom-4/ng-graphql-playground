@@ -1,0 +1,23 @@
+{
+  "figmaApiToken": "${FIGMA_API_TOKEN}",
+  "figmaProjectId": "${FIGMA_PROJECT_ID}",
+  "figmaComponentKey": "${FIGMA_COMPONENT_KEY}",
+  "builderToken": "${BUILDER_IO_API_TOKEN}",
+  "builderSpaceId": "${BUILDER_IO_SPACE_ID}",
+  "outputDir": "frontend/src/app/components/generated/",
+  "framework": "angular",
+  "typescript": true,
+  "tailwind": {
+    "enabled": true,
+    "version": 4
+  },
+  "codeSettings": {
+    "enableStrictTypes": true,
+    "generateOnPush": false,
+    "componentNamingConvention": "kebab-case"
+  },
+  "figmaToBuilder": {
+    "autoSync": false,
+    "syncSchedule": "manual"
+  }
+}
