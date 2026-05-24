@@ -63,22 +63,16 @@ For details, see: [rules/implementation-flow-rules.md](rules/implementation-flow
 - **Contribution Guide**: See `../../CONTRIBUTING.md`
 - **Architecture Guide**: See `../../docs/research-architecuture-design.md`
 
-## Automation & Enforcement
+## Planned Enhancements
 
-### GitHub Actions Workflows
+Future enhancements planned to support automated enforcement:
 
-| Workflow | Purpose | Trigger |
-|----------|---------|---------|
-| **implementation-flow-validation.yml** | Validates implementation plans on every PR | Pull request opened/updated |
-| **ai-code-review.yml** (existing) | Auto-approves PRs after CI passes | Pull request opened/synchronized |
+| Feature | Issue | Status | Details |
+|---------|-------|--------|---------|
+| **GitHub Actions Implementation Validation** | #23 | 📋 Planned | Automate validation of implementation plans on PR creation |
+| **Automated Plan Structure Checking** | #23 | 📋 Planned | Verify all required sections present in implementation plans |
 
-The **implementation-flow-validation.yml** workflow automatically:
-- ✅ Extracts issue number from branch name
-- ✅ Verifies implementation plan exists
-- ✅ Checks plan structure (all required sections)
-- ✅ Validates file manifest
-- ✅ Counts implementation criteria items
-- ✅ Posts validation summary as PR comment
+**Note**: GitHub Actions automation is deferred to Issue #23 when team grows to 5+ contributors. The current manual process with Issue #19 PR review is sufficient for single-contributor + Copilot workflows. See `docs/implementation-planning/issue-22-implementation.md` for Phase 2 deferral rationale.
 
 ## Future Procedures (Planned)
 

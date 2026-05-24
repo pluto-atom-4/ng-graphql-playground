@@ -201,18 +201,7 @@ git push origin feat/issue-<N>-...
 # Link issue: "Fixes #<N>" in description
 ```
 
-### 5.2 Automated Validation
-
-The GitHub Actions workflow `implementation-flow-validation.yml` automatically:
-
-- ✅ Extracts issue number from branch name
-- ✅ Verifies implementation plan exists
-- ✅ Checks all required sections present
-- ✅ Validates file manifest format
-- ✅ Counts implementation criteria items
-- ✅ Posts validation summary as PR comment
-
-### 5.3 Follow Issue #19 PR Review Procedure
+### 5.2 Follow Issue #19 PR Review Procedure
 
 Once PR is created:
 
@@ -325,24 +314,9 @@ Every implementation must satisfy ALL of these before PR merge:
 
 ---
 
-## Workflow Automation
+## Note: GitHub Actions Automation (Future Enhancement)
 
-### GitHub Actions: implementation-flow-validation.yml
-
-Automatically triggered on every PR to:
-
-1. Extract issue number from branch name
-2. Verify implementation plan exists
-3. Validate plan structure (all required sections)
-4. Check file manifest format and completeness
-5. Count implementation criteria items
-6. Post validation summary as PR comment
-
-**Benefits**:
-- ✅ Enforces consistency across all PRs
-- ✅ Immediate feedback on plan completeness
-- ✅ Reduces human error
-- ✅ Provides audit trail
+GitHub Actions automation for implementation plan validation is planned for **Issue #23** when team size grows. See `docs/implementation-planning/issue-22-implementation.md` for Phase 2 deferral rationale.
 
 ---
 
@@ -373,21 +347,15 @@ touch .github/copilot/templates/IMPLEMENTATION_PLAN_TEMPLATE.md
 # Edit file...
 # Update manifest: ✅ Files Created → IMPLEMENTATION_PLAN_TEMPLATE.md
 
-# Create GitHub Actions workflow
-touch .github/workflows/implementation-flow-validation.yml
-# Edit file...
-# Update manifest: ✅ Files Created → implementation-flow-validation.yml
-
 # Update documentation
 # Edit .github/copilot/README.md
 # Update manifest: ✅ Files Modified → .github/copilot/README.md
 
 # Commit progress
 git add .github/copilot/templates/IMPLEMENTATION_PLAN_TEMPLATE.md \
-        .github/workflows/implementation-flow-validation.yml \
         .github/copilot/README.md \
         docs/implementation-planning/issue-22-implementation.md
-git commit -m "feat: Add implementation plan template and GitHub Actions validation"
+git commit -m "feat: Add implementation plan template and standardized procedures"
 git push origin feat/issue-22-implementation-flow
 
 # Phase 4: Pre-PR quality gate
@@ -397,9 +365,10 @@ pnpm test                                 # ✅ Pass
 git diff --name-only                     # Verify against manifest
 
 # Phase 5: Create PR
-# GitHub Actions validates plan exists
-# Posts validation comment: ✅ All checks passed
-# Status: "Ready for Code Review"
+gh pr create --base main --head feat/issue-22-implementation-flow \
+  --title "feat: Issue #22 - ..." \
+  --body "Closes #22"
+# Note: Manual verification of implementation plan is required before creating PR
 
 # Phase 6: PR review (Issue #19 procedure)
 # Phase 1: Gather PR details, examine changes
@@ -419,7 +388,7 @@ git diff --name-only                     # Verify against manifest
 - **PR Review Procedure**: [pr-review-workflow.md](pr-review-workflow.md)
 - **Monorepo Architecture**: See `CLAUDE.md` for conventions
 - **Contributing Guide**: See `CONTRIBUTING.md` for development process
-- **GitHub Actions Automation**: `.github/workflows/implementation-flow-validation.yml`
+- **Phase 2 Deferral**: See `docs/implementation-planning/issue-22-implementation.md`
 
 ---
 
