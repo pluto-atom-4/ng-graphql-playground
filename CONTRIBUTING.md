@@ -204,7 +204,7 @@ Status options: ✅ (Done), ⏳ (In Progress), ❌ (Blocked), 🔄 (Pending Revi
 
 All implementations must meet these criteria before merge:
 
-- [ ] Code passes linting: `pnpm lint --workspace=frontend`
+- [ ] Code passes linting: `pnpm lint`
 - [ ] All tests pass: `pnpm test`
 - [ ] TypeScript strict mode: No type errors
 - [ ] Security: No secrets, credentials, or API keys in code
@@ -262,7 +262,7 @@ cp .github/copilot/templates/IMPLEMENTATION_PLAN_TEMPLATE.md \
 
 # 5. Run checks before creating PR
 pnpm format                           # Auto-format code
-pnpm lint --workspace=frontend        # Check for style issues
+pnpm lint                             # Check for style issues
 pnpm test                             # Run tests
 
 # 6. Commit and push
@@ -434,13 +434,13 @@ export class BuildListComponent {
 
 ```bash
 # Run all tests
-npm run test
+pnpm test
 
 # Run specific test file
-npm run test -- --include='**/build.service.spec.ts'
+pnpm test:frontend -- --include='**/build.service.spec.ts'
 
 # Run with coverage
-npm run test -- --coverage
+pnpm test:frontend -- --coverage
 ```
 
 ### Test Standards
