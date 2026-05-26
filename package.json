@@ -8,17 +8,19 @@
     "docker:clean": "docker-compose down -v",
     "docker:logs": "docker-compose logs -f sql-server",
     "db:migrate": "cd backend/src/FactoryApp.WebApi && dotnet ef database update",
-    "setup": "npm run docker:up && npm run db:migrate && echo '✅ Setup complete. Run: npm run dev:backend & npm run dev:frontend'",
+    "setup": "pnpm docker:up && pnpm db:migrate && echo '✅ Setup complete. Run: pnpm dev:backend & pnpm dev:frontend'",
+    "dev": "pnpm --parallel dev:backend dev:frontend",
     "dev:backend": "cd backend/src/FactoryApp.WebApi && dotnet watch run",
-    "dev:frontend": "cd frontend && npm run ng serve",
-    "build": "npm run build:backend && npm run build:frontend",
+    "dev:frontend": "pnpm --filter frontend run ng serve",
+    "build": "pnpm build:backend && pnpm build:frontend",
     "build:backend": "dotnet build ./backend/src/FactoryApp.sln",
-    "build:frontend": "npm run build --workspace=frontend",
-    "test": "npm run test:backend && npm run test:frontend",
+    "build:frontend": "pnpm --filter frontend run build",
+    "test": "pnpm test:backend && pnpm test:frontend",
     "test:backend": "dotnet test ./backend/src",
-    "test:frontend": "npm run test --workspace=frontend",
-    "codegen": "npm run codegen --workspace=frontend",
-    "lint": "npm run lint --workspace=frontend"
+    "test:frontend": "pnpm --filter frontend run test",
+    "codegen": "pnpm --filter frontend run codegen",
+    "lint": "pnpm --filter frontend run lint",
+    "format": "pnpm --filter frontend run format"
   },
   "workspaces": [
     "frontend"

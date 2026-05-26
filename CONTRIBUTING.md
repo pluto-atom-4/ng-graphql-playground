@@ -45,8 +45,9 @@ For AI code generation and GitHub Copilot usage, see [.github/copilot-instructio
    ```bash
    # See docs/SETUP.md for detailed instructions
    # Quick start:
-   npm run setup          # Start Docker + initialize DB
-   npm run dev            # Start backend + frontend watchers
+   pnpm install           # Install dependencies
+   pnpm setup            # Start Docker + initialize DB
+   pnpm dev              # Start backend + frontend watchers
    ```
 
 3. **Verify setup**
@@ -314,8 +315,7 @@ dotnet watch run
 
 **Frontend (Angular):**
 ```bash
-cd frontend
-npm run ng serve
+pnpm --filter frontend run ng serve
 # Code with HMR (Hot Module Replacement)
 ```
 
@@ -323,13 +323,13 @@ npm run ng serve
 
 ```bash
 # Backend tests
-npm run test
+pnpm test:backend
 
 # Frontend tests
-npm run test --workspace=frontend
+pnpm test:frontend
 
 # Lint all
-npm run lint --workspace=frontend
+pnpm lint
 ```
 
 ### 4. Commit Changes
@@ -628,8 +628,8 @@ See [SECURITY.md](SECURITY.md) for detailed security policies.
 
 3. **Run tests locally**
    ```bash
-   npm run test
-   npm run lint
+   pnpm test
+   pnpm lint
    ```
 
 4. **Push to remote**
@@ -817,9 +817,9 @@ See [docs/SETUP.md](docs/SETUP.md) troubleshooting section.
 ### Test Failures
 
 ```bash
-# Clear node_modules and reinstall
-rm -rf node_modules package-lock.json
-npm install
+# Clear node_modules and pnpm cache, then reinstall
+rm -rf node_modules pnpm-lock.yaml
+pnpm install
 
 # Rebuild backend
 cd backend/src
@@ -827,7 +827,7 @@ dotnet clean
 dotnet build
 
 # Run tests again
-npm run test
+pnpm test
 ```
 
 ### Git Issues

@@ -108,12 +108,14 @@ Type safety is fully automated during a local build. Changing a backend C# DTO o
 
 * [.NET SDK](https://microsoft.com) (Version 8.0 or later)
 * [Node.js](https://nodejs.org) (Version 18 or later)
+* [pnpm](https://pnpm.io/) (Version 8.0 or later) — Package manager for monorepo
 * [Docker Desktop](https://www.docker.com/products/docker-desktop) (for SQL Server 2022)
 
 ### One-Time Setup
 
 ```bash
-npm run setup
+pnpm install
+pnpm setup
 # Starts SQL Server container and runs database migrations
 ```
 
@@ -121,14 +123,20 @@ npm run setup
 
 **Terminal 1: Backend (.NET with hot-reload)**
 ```bash
-npm run dev:backend
+pnpm dev:backend
 # Runs: dotnet watch run on Port 5000
 ```
 
 **Terminal 2: Frontend (Angular with HMR)**
 ```bash
-npm run dev:frontend
-# Runs: npm run ng serve on Port 4200
+pnpm dev:frontend
+# Runs: pnpm --filter frontend run ng serve on Port 4200
+```
+
+**Or run both concurrently:**
+```bash
+pnpm dev
+# Starts both backend and frontend watchers simultaneously
 ```
 
 **Open browser to:** `http://localhost:4200`
@@ -144,17 +152,17 @@ npm run dev:frontend
 ### Stop Services
 
 ```bash
-npm run docker:down
+pnpm docker:down
 ```
 
 ### Full Docker Command Reference
 
 ```bash
-npm run docker:up          # Start SQL Server container
-npm run docker:down        # Stop SQL Server container
-npm run docker:clean       # Remove all containers and data volumes
-npm run docker:logs        # View SQL Server logs
-npm run db:migrate         # Run EF Core migrations
+pnpm docker:up          # Start SQL Server container
+pnpm docker:down        # Stop SQL Server container
+pnpm docker:clean       # Remove all containers and data volumes
+pnpm docker:logs        # View SQL Server logs
+pnpm db:migrate         # Run EF Core migrations
 ```
 
 For comprehensive setup instructions, see [**docs/SETUP.md**](./docs/SETUP.md)
