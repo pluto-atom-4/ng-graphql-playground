@@ -1,0 +1,9 @@
+{
+  "*.md": [
+    "pnpm format --write"
+  ],
+  "*.{json,yaml,yml}": [
+    "pnpm format --write"
+  ]
+}
+

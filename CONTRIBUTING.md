@@ -332,6 +332,93 @@ pnpm test:frontend
 pnpm lint
 ```
 
+### 3.5 Pre-Commit Hooks
+
+**Automatic Code Quality Checks**
+
+This project uses **Husky + lint-staged** to automatically enforce code quality before commits:
+
+```bash
+git commit -m "feat: Add feature"
+# ↓ Pre-commit hook runs automatically
+# ↓ Formats code with Prettier
+# ✅ Commit allowed if all checks pass
+# ❌ Commit rejected if any check fails
+```
+
+**Prerequisites (First-Time Setup):**
+
+```bash
+# Install all dependencies (required before hooks work)
+pnpm install
+
+# The prepare script auto-installs Husky hooks:
+# $ husky install
+```
+
+**Current Checks:**
+
+- ✅ **Markdown Formatting:** Prettier auto-fixes code style
+- ✅ **JSON/YAML Formatting:** Prettier auto-fixes configuration files
+- ✅ **File patterns:** Only checks files you modified (staged files)
+
+**Future Checks (When Code Structure Added):**
+
+- 🔄 **Frontend TypeScript/HTML:** Prettier + ESLint (configured, awaiting `frontend/src/` scaffold)
+- 🔄 **Backend C# Formatting:** `dotnet format` verification (configured, awaiting `backend/src/**/*.cs` code)
+
+See [Issue #9 (Design-to-Code Workflow)](https://github.com/pluto-atom-4/ng-graphql-playground/issues/9) for frontend scaffolding timeline.
+
+**If a check fails:**
+
+1. The commit is rejected
+2. Errors are displayed with fixes applied (when possible)
+3. Re-stage and commit: `git add . && git commit`
+4. If you fixed all issues, the commit succeeds
+
+**Bypass pre-commit hooks** (for CI/CD or emergency):
+
+```bash
+# Skip pre-commit hooks one time
+git commit --no-verify -m "feat: Emergency hotfix"
+
+# Useful for: CI/CD automation, cherry-picks, rebases
+```
+
+**Troubleshooting:**
+
+| Issue | Solution |
+|-------|----------|
+| "Pre-commit hooks fail on first clone" | Run `pnpm install` to install dependencies and Husky hooks |
+| "command not found: pnpm" | Run `pnpm install` to reinstall dependencies |
+| "prettier: command not found" | Run `pnpm install` to ensure prettier is installed |
+| "Hook takes too long" | Reduce scope: only commit related files |
+| "Permission denied on .husky/pre-commit" | Run: `chmod +x .husky/pre-commit` |
+| ".husky/ not found after clone" | Run `pnpm install` (prepare script installs hooks) |
+
+**Backend C# Developers:**
+
+Pre-commit hooks verify C# formatting via `dotnet format` using the project's `.editorconfig` rules (see root `.editorconfig`):
+
+```bash
+# When backend/src/**/*.cs files are added to the repository:
+git add backend/src/FactoryApp.Domain/Build.cs
+git commit -m "feat: Add BuildStatus property"
+# ↓ Pre-commit hook runs
+# ↓ dotnet format verifies formatting rules from .editorconfig
+# ✅ Commit allowed if formatting is correct
+# ❌ Commit rejected if style violations found
+
+# If rejected, auto-fix and recommit:
+dotnet format ./backend/src/FactoryApp.sln
+git add .
+git commit -m "feat: Add BuildStatus property"
+```
+
+**Note:** StyleCop analyzers and FxCop security checks run at **build-time** (`dotnet build`), not pre-commit, to keep pre-commit hooks fast and focused on formatting.
+
+---
+
 ### 4. Commit Changes
 
 ```bash
