@@ -21,9 +21,15 @@
     "test:frontend": "pnpm --filter frontend run test",
     "codegen": "pnpm --filter frontend run codegen",
     "lint": "pnpm --filter frontend run lint",
-    "format": "pnpm --filter frontend run format"
+    "format": "pnpm --filter frontend run format",
+    "design:sync": "builder sync --config .builderio/config.json",
+    "design:sync-back": "figma-code-connect sync",
+    "mcp:figma": "figma-mcp",
+    "validate:generated-components": "node scripts/validate-generated-components.js"
   },
   "devDependencies": {
+    "@builder.io/cli": "^1.2.10",
+    "@figma/code-connect": "^1.4.5",
     "concurrently": "^8.2.0",
     "husky": "9.1.7",
     "lint-staged": "17.0.5",

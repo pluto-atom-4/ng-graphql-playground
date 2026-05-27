@@ -1,0 +1,17 @@
+{
+  "figmaPersonalToken": "${FIGMA_API_TOKEN}",
+  "figmaProjectId": "${FIGMA_PROJECT_ID}",
+  "codeLocations": [
+    {
+      "path": "frontend/src/app/components/generated/**/*.component.ts",
+      "figmaComponentName": "^([A-Z][a-zA-Z]+)Component$"
+    },
+    {
+      "path": "frontend/src/app/components/**/*.component.ts",
+      "figmaComponentName": "^([A-Z][a-zA-Z]+)Component$"
+    }
+  ],
+  "fileExtension": "ts",
+  "language": "typescript",
+  "parser": "typescript"
+}
